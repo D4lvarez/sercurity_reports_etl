@@ -1,6 +1,7 @@
 import re
 
 from bs4 import BeautifulSoup, Tag
+import orjson
 
 from utils import FileUtils
 
@@ -135,7 +136,24 @@ class TenasusReportHTML:
 class TenasusReportJSON:
     def __init__(self, path: str) -> None:
         self.path = path
-        self.regex = r"[\n\t\s]+"
+        self.regex_string = r"[\n\t\s]+"
+        self.regex_html = r"<.*?>"
 
-    def process_file(self):
-        print()
+    def process_file(self) -> list[dict]:
+        json_file = orjson.loads(FileUtils.read_file(self.path))
+        report = json_file["site"].pop()
+        vulnerabilities: list[dict] = report["alerts"]
+
+        for vulnerability in vulnerabilities:
+            for k in vulnerability:
+                if k != "instances":
+                    vulnerability[k] = self._clean_text_html(vulnerability[k])
+                    vulnerability[k] = self._clean_string(vulnerability[k])
+
+        return vulnerabilities
+
+    def _clean_text_html(self, text: str) -> str:
+        return re.sub(self.regex_html, "", text)
+
+    def _clean_string(self, text: str) -> str:
+        return re.sub(self.regex_string, " ", text).strip()

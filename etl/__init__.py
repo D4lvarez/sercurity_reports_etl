@@ -1,1 +1,1 @@
-from .tenasus_report import TenasusReportHTML
+from .tenasus_report import TenasusReportHTML, TenasusReportJSON
