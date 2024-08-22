@@ -1,10 +1,14 @@
-from etl import TenasusReportHTML, TenasusReportJSON
+from etl import TenasusReportHTML, TenasusReportJSON, TenableReportHTML
 
 TENASUS_REPORT_HTML_PATH: str = (
     "C:\\Users\\dalvarez\\Desktop\\security_reports\\intelix.html"
 )
 TENASUS_REPORT_JSON_PATH: str = (
     "C:\\Users\\dalvarez\\Desktop\\security_reports\\intelix.json"
+)
+
+TENABLE_REPORT_HTML_PATH: str = (
+    "C:\\Users\\dalvarez\\Desktop\\security_reports\\Valoracion_6noqof.html"
 )
 
 
@@ -20,5 +24,11 @@ def process_tensasus_json():
     print(report)
 
 
+def process_tenable_html():
+    tenable_html = TenableReportHTML(TENABLE_REPORT_HTML_PATH)
+    report = tenable_html.process_file()
+    print(report)
+
+
 if __name__ == "__main__":
-    pass
+    process_tenable_html()
