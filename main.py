@@ -31,4 +31,6 @@ def process_tenable_html():
 
 
 if __name__ == "__main__":
+    process_tenasus_html()
+    process_tensasus_json()
     process_tenable_html()
